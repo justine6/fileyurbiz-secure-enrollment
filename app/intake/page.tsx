@@ -50,7 +50,9 @@ export default function IntakePage({ searchParams }: IntakePageProps) {
       <input placeholder="Owner Name" />
       <br /><br />
 
-      <Link href="/checkout">Continue to Checkout</Link>
+      <Link href={selectedState ? `/checkout?state=${selectedState.code}` : "/pricing"}>
+        Continue to Checkout
+      </Link>
     </main>
   );
 }
