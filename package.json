@@ -1,0 +1,27 @@
+{
+  "name": "fileyurbiz-secure-enrollment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Secure enrollment platform for FileYourBiz",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justine6/fileyurbiz-secure-enrollment.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "next": "^16.2.4",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "typescript": "^6.0.3"
+  }
+}

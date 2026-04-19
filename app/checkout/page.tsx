@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { getStatePricingByCode } from "@/lib/pricing/statePricing";
 
+type SearchParams = Promise<{
+  state?: string;
+}>;
+
 type CheckoutPageProps = {
-  searchParams?: {
-    state?: string;
-  };
+  searchParams: SearchParams;
 };
 
-export default function CheckoutPage({ searchParams }: CheckoutPageProps) {
-  const selectedStateCode = searchParams?.state ?? "";
+export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const selectedStateCode = resolvedSearchParams?.state ?? "";
   const selectedState = selectedStateCode
     ? getStatePricingByCode(selectedStateCode)
     : undefined;
@@ -31,7 +34,8 @@ export default function CheckoutPage({ searchParams }: CheckoutPageProps) {
             <strong>Selected State:</strong> {selectedState.name} ({selectedState.code})
           </p>
           <p style={{ margin: "0.5rem 0 0 0" }}>
-            <strong>Enrollment Price:</strong> ${selectedState.price}
+            <strong>Enrollment Price:</strong>{" "}
+            {selectedState.price !== null ? `$${selectedState.price}` : "TBD"}
           </p>
         </div>
       ) : (

@@ -22,7 +22,10 @@ export default function PricingPage() {
           >
             <h2 style={{ margin: 0 }}>{state.name}</h2>
             <p style={{ margin: "0.5rem 0" }}>
-              Enrollment Price: <strong>${state.price}</strong>
+              Enrollment Price:{" "}
+              <strong>
+                {state.price !== null ? `$${state.price}` : "TBD"}
+              </strong>
             </p>
             {state.filingFeeNote && (
               <p style={{ margin: 0, fontSize: "0.95rem", color: "#555" }}>
