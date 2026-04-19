@@ -7,7 +7,7 @@ export default function PricingPage() {
   return (
     <main style={{ padding: "2rem" }}>
       <h1>Pricing</h1>
-      <p>Select your state to view current enrollment pricing.</p>
+      <p>Select your state to begin enrollment.</p>
 
       <div style={{ marginTop: "1.5rem" }}>
         {states.map((state) => (
@@ -29,12 +29,14 @@ export default function PricingPage() {
                 {state.filingFeeNote}
               </p>
             )}
+
+            <div style={{ marginTop: "1rem" }}>
+              <Link href={`/intake?state=${state.code}`}>
+                Start Enrollment for {state.name}
+              </Link>
+            </div>
           </div>
         ))}
-      </div>
-
-      <div style={{ marginTop: "2rem" }}>
-        <Link href="/intake">Continue to Intake</Link>
       </div>
     </main>
   );
