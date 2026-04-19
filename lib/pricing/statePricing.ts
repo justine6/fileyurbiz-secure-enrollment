@@ -60,8 +60,16 @@ export const statePricing: StatePricing[] = [
   { code: "WY", name: "Wyoming", price: null, filingFeeNote: "Pricing to be provided.", isActive: true, isConfigured: false },
 ];
 
+export function isStateEnrollmentAvailable(state: StatePricing): boolean {
+  return state.isActive && state.isConfigured && state.price !== null;
+}
+
 export function getActiveStatePricing(): StatePricing[] {
   return statePricing.filter((state) => state.isActive);
+}
+
+export function getAvailableStatePricing(): StatePricing[] {
+  return statePricing.filter((state) => isStateEnrollmentAvailable(state));
 }
 
 export function getStatePricingByCode(code: string): StatePricing | undefined {

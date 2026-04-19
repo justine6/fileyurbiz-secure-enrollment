@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { getActiveStatePricing } from "@/lib/pricing/statePricing";
+import {
+  getActiveStatePricing,
+  isStateEnrollmentAvailable,
+} from "@/lib/pricing/statePricing";
 
 export default function PricingPage() {
   const states = getActiveStatePricing();
@@ -13,7 +16,7 @@ export default function PricingPage() {
 
       <div style={{ display: "grid", gap: "1rem" }}>
         {states.map((state) => {
-          const isConfigured = state.isConfigured;
+          const isAvailable = isStateEnrollmentAvailable(state);
 
           return (
             <div
@@ -26,7 +29,6 @@ export default function PricingPage() {
                 boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
               }}
             >
-              {/* Header */}
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <h2 style={{ margin: 0 }}>{state.name}</h2>
 
@@ -36,15 +38,14 @@ export default function PricingPage() {
                     borderRadius: "999px",
                     fontSize: "0.8rem",
                     fontWeight: 600,
-                    backgroundColor: isConfigured ? "#e6f4ea" : "#fff8e1",
-                    color: isConfigured ? "#1e7e34" : "#b7791f",
+                    backgroundColor: isAvailable ? "#e6f4ea" : "#fff8e1",
+                    color: isAvailable ? "#1e7e34" : "#b7791f",
                   }}
                 >
-                  {isConfigured ? "Available Now" : "Pricing Pending"}
+                  {isAvailable ? "Available Now" : "Pricing Pending"}
                 </span>
               </div>
 
-              {/* Price */}
               <p style={{ margin: "0.75rem 0", fontSize: "1rem" }}>
                 Enrollment Price:{" "}
                 <strong style={{ fontSize: "1.2rem" }}>
@@ -52,25 +53,29 @@ export default function PricingPage() {
                 </strong>
               </p>
 
-              {/* Note */}
               {state.filingFeeNote && (
                 <p style={{ margin: 0, fontSize: "0.9rem", color: "#666" }}>
                   {state.filingFeeNote}
                 </p>
               )}
 
-              {/* CTA */}
               <div style={{ marginTop: "1rem" }}>
-                <Link
-                  href={`/intake?state=${state.code}`}
-                  style={{
-                    textDecoration: "none",
-                    color: "#2563eb",
-                    fontWeight: 500,
-                  }}
-                >
-                  Start Enrollment →
-                </Link>
+                {isAvailable ? (
+                  <Link
+                    href={`/intake?state=${state.code}`}
+                    style={{
+                      textDecoration: "none",
+                      color: "#2563eb",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Start Enrollment →
+                  </Link>
+                ) : (
+                  <span style={{ color: "#999", fontWeight: 500 }}>
+                    Coming Soon
+                  </span>
+                )}
               </div>
             </div>
           );

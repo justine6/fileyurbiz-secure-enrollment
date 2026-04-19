@@ -19,6 +19,13 @@ export default function RootLayout({
             }}
           >
             {/* Logo */}
+            <a href="/start" style={{ display: "inline-flex", alignItems: "center" }}>
+              <img
+                src="/fileyurbiz-logo.png"
+                alt="FileYurBiz"
+                style={{ height: "54px", width: "auto", display: "block" }}
+              />
+            </a>
             <div
               style={{
                 fontStyle: "italic",
@@ -27,7 +34,7 @@ export default function RootLayout({
                 letterSpacing: "0.5px",
               }}
             >
-              FileYurBiz
+           
             </div>
 
             {/* Navigation */}
