@@ -34,23 +34,29 @@ export default async function ConfirmationPage({
           CONFIRMATION
         </h1>
 
-        <div
-          style={{
-            border: "1px solid #d4edda",
-            backgroundColor: "#f6fff8",
-            borderRadius: "8px",
-            padding: "1.25rem",
-            marginBottom: "1.5rem",
-          }}
-        >
-          <h2 style={{ marginTop: 0, color: "#1e7e34" }}>
-            Your submission has been received.
-          </h2>
-          <p style={{ marginBottom: 0, color: "#444", lineHeight: 1.6 }}>
-            Your enrollment request has been captured in the workflow prototype.
-            The next step would typically be payment confirmation and internal processing.
-          </p>
-        </div>
+          <div
+            style={{
+              border: "1px solid #d4edda",
+              backgroundColor: "#f6fff8",
+              borderRadius: "8px",
+              padding: "1.25rem",
+              marginBottom: "1.5rem",
+            }}
+          >
+            <h2 style={{ marginTop: 0, color: "#1e7e34" }}>
+              Your submission has been received.
+            </h2>
+
+            <p style={{ marginBottom: "0.75rem", color: "#444", lineHeight: 1.6 }}>
+              Your enrollment request has been captured in the workflow prototype.
+              The next step would typically be payment confirmation and internal processing.
+            </p>
+
+            {/* ✅ ADD HERE */}
+            <p style={{ fontSize: "0.9rem", color: "#666" }}>
+              A confirmation email will typically be sent in a production system.
+            </p>
+          </div>
 
         {selectedState && (
           <div

@@ -17,6 +17,8 @@ type IntakeFormData = {
   employeeCount: string;
 };
 
+const STORAGE_KEY = "intakeFormData";
+
 export default function IntakeForm({ stateCode }: IntakeFormProps) {
   const router = useRouter();
 
@@ -31,19 +33,23 @@ export default function IntakeForm({ stateCode }: IntakeFormProps) {
   });
 
   useEffect(() => {
-    const saved = localStorage.getItem("intakeFormData");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved) as IntakeFormData;
         setFormData(parsed);
-      } catch (error) {
-        console.error("Failed to load intake form data", error);
       }
+    } catch (error) {
+      console.error("Failed to load intake form data", error);
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("intakeFormData", JSON.stringify(formData));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+    } catch (error) {
+      console.error("Failed to save intake form data", error);
+    }
   }, [formData]);
 
   function handleChange(
@@ -57,6 +63,12 @@ export default function IntakeForm({ stateCode }: IntakeFormProps) {
   }
 
   function handleContinue() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+    } catch (error) {
+      console.error("Failed to persist intake form data before checkout", error);
+    }
+
     router.push(`/checkout?state=${stateCode}`);
   }
 
