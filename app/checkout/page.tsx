@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CheckoutSummary from "@/components/forms/CheckoutSummary";
 import {
   getStatePricingByCode,
   isStateEnrollmentAvailable,
@@ -21,51 +22,86 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
   if (!selectedState) {
     return (
-      <main style={{ padding: "2rem" }}>
-        <h1>Checkout</h1>
-        <p>No state selected yet.</p>
-        <Link href="/pricing">Go back to Pricing</Link>
+      <main style={{ padding: "2.5rem", fontFamily: "sans-serif" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+          <h1>Checkout</h1>
+          <p>No state selected yet.</p>
+          <Link href="/pricing">Go back to Pricing</Link>
+        </div>
       </main>
     );
   }
 
   if (!isStateEnrollmentAvailable(selectedState)) {
     return (
-      <main style={{ padding: "2rem" }}>
-        <h1>Checkout Not Available</h1>
-        <p>
-          {selectedState.name} is not yet available for checkout because pricing
-          has not been configured.
-        </p>
-        <Link href="/pricing">Return to Pricing</Link>
+      <main style={{ padding: "2.5rem", fontFamily: "sans-serif" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+          <h1>Checkout Not Available</h1>
+          <p>
+            {selectedState.name} is not yet available for checkout because pricing
+            has not been configured.
+          </p>
+          <Link href="/pricing">Return to Pricing</Link>
+        </div>
       </main>
     );
   }
 
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1>Checkout</h1>
+    <main style={{ padding: "2.5rem", fontFamily: "sans-serif" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <h1
+          style={{
+            textAlign: "center",
+            color: "#0b69b7",
+            marginBottom: "2rem",
+            fontSize: "2.25rem",
+            fontWeight: 700,
+          }}
+        >
+          CHECKOUT
+        </h1>
 
-      <div
-        style={{
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-          padding: "1rem",
-          marginBottom: "1.5rem",
-          backgroundColor: "#f9f9f9",
-        }}
-      >
-        <p style={{ margin: 0 }}>
-          <strong>Selected State:</strong> {selectedState.name} ({selectedState.code})
+        <CheckoutSummary
+          stateName={selectedState.name}
+          stateCode={selectedState.code}
+          price={selectedState.price!}
+        />
+
+      <div style={{ marginTop: "1.5rem" }}>
+        <p style={{ color: "#666", marginBottom: "1rem" }}>
+          Payment integration will go here.
         </p>
-        <p style={{ margin: "0.5rem 0 0 0" }}>
-          <strong>Enrollment Price:</strong> ${selectedState.price}
-        </p>
+
+        <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
+          <Link
+            href={`/intake?state=${selectedState.code}`}
+            style={{
+              color: "#0b69b7",
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            Edit Information
+          </Link>
+
+          <Link
+            href={`/confirmation?state=${selectedState.code}`}
+            style={{
+              display: "inline-block",
+              backgroundColor: "#000",
+              color: "#fff",
+              textDecoration: "none",
+              padding: "0.9rem 1.5rem",
+              borderRadius: "6px",
+              fontWeight: 600,
+            }}
+          >
+            Complete Order
+          </Link>
+        </div>
       </div>
-
-      <p>Payment integration will go here.</p>
-
-      <Link href="/confirmation">Complete Order</Link>
+    </div>
     </main>
   );
 }
