@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type IntakeFormProps = {
   stateCode: string;
@@ -18,6 +18,8 @@ type IntakeFormData = {
 };
 
 export default function IntakeForm({ stateCode }: IntakeFormProps) {
+  const router = useRouter();
+
   const [formData, setFormData] = useState<IntakeFormData>({
     businessName: "",
     businessAddress: "",
@@ -27,6 +29,22 @@ export default function IntakeForm({ stateCode }: IntakeFormProps) {
     ownershipPercentages: "",
     employeeCount: "",
   });
+
+  useEffect(() => {
+    const saved = localStorage.getItem("intakeFormData");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setFormData(parsed);
+      } catch (error) {
+        console.error("Failed to load intake form data", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("intakeFormData", JSON.stringify(formData));
+  }, [formData]);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -38,6 +56,10 @@ export default function IntakeForm({ stateCode }: IntakeFormProps) {
     }));
   }
 
+  function handleContinue() {
+    router.push(`/checkout?state=${stateCode}`);
+  }
+
   return (
     <div>
       <p style={{ fontSize: "0.9rem", color: "#666", marginBottom: "1rem" }}>
@@ -45,30 +67,118 @@ export default function IntakeForm({ stateCode }: IntakeFormProps) {
       </p>
 
       <div style={{ display: "grid", gap: "1rem" }}>
-        <input name="businessName" value={formData.businessName} onChange={handleChange} placeholder="Business Name" style={{ padding: "0.9rem", border: "1px solid #ccc" }} />
-        <textarea name="businessAddress" value={formData.businessAddress} onChange={handleChange} placeholder="Business Address" rows={4} style={{ padding: "0.9rem", border: "1px solid #ccc" }} />
-        <input name="businessPhone" value={formData.businessPhone} onChange={handleChange} placeholder="Business Phone" style={{ padding: "0.9rem", border: "1px solid #ccc" }} />
-        <input name="businessEmail" value={formData.businessEmail} onChange={handleChange} placeholder="Business Email" style={{ padding: "0.9rem", border: "1px solid #ccc" }} />
-        <textarea name="ownerNames" value={formData.ownerNames} onChange={handleChange} placeholder="Owner Name(s)" rows={3} style={{ padding: "0.9rem", border: "1px solid #ccc" }} />
-        <input name="ownershipPercentages" value={formData.ownershipPercentages} onChange={handleChange} placeholder="Example: 20, 30, 50" style={{ padding: "0.9rem", border: "1px solid #ccc" }} />
-        <input name="employeeCount" value={formData.employeeCount} onChange={handleChange} placeholder="Number of Employees" style={{ padding: "0.9rem", border: "1px solid #ccc" }} />
+        <div>
+          <label style={{ display: "block", marginBottom: "0.4rem", fontWeight: 600 }}>
+            Business Name
+          </label>
+          <input
+            name="businessName"
+            value={formData.businessName}
+            onChange={handleChange}
+            placeholder="Business Name"
+            style={{ width: "100%", padding: "0.9rem", border: "1px solid #ccc" }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: "block", marginBottom: "0.4rem", fontWeight: 600 }}>
+            Business Address
+          </label>
+          <textarea
+            name="businessAddress"
+            value={formData.businessAddress}
+            onChange={handleChange}
+            placeholder="Business Address"
+            rows={4}
+            style={{ width: "100%", padding: "0.9rem", border: "1px solid #ccc" }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: "block", marginBottom: "0.4rem", fontWeight: 600 }}>
+            Business Phone
+          </label>
+          <input
+            name="businessPhone"
+            value={formData.businessPhone}
+            onChange={handleChange}
+            placeholder="Business Phone"
+            style={{ width: "100%", padding: "0.9rem", border: "1px solid #ccc" }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: "block", marginBottom: "0.4rem", fontWeight: 600 }}>
+            Business Email
+          </label>
+          <input
+            name="businessEmail"
+            type="email"
+            value={formData.businessEmail}
+            onChange={handleChange}
+            placeholder="Business Email"
+            style={{ width: "100%", padding: "0.9rem", border: "1px solid #ccc" }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: "block", marginBottom: "0.4rem", fontWeight: 600 }}>
+            Business Owner / Partner Name(s)
+          </label>
+          <textarea
+            name="ownerNames"
+            value={formData.ownerNames}
+            onChange={handleChange}
+            placeholder="Owner Name(s)"
+            rows={3}
+            style={{ width: "100%", padding: "0.9rem", border: "1px solid #ccc" }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: "block", marginBottom: "0.4rem", fontWeight: 600 }}>
+            Ownership Percentages
+          </label>
+          <input
+            name="ownershipPercentages"
+            value={formData.ownershipPercentages}
+            onChange={handleChange}
+            placeholder="Example: 20, 30, 50"
+            style={{ width: "100%", padding: "0.9rem", border: "1px solid #ccc" }}
+          />
+        </div>
+
+        <div>
+          <label style={{ display: "block", marginBottom: "0.4rem", fontWeight: 600 }}>
+            Number of Employees
+          </label>
+          <input
+            name="employeeCount"
+            value={formData.employeeCount}
+            onChange={handleChange}
+            placeholder="How many employees are there?"
+            style={{ width: "100%", padding: "0.9rem", border: "1px solid #ccc" }}
+          />
+        </div>
       </div>
 
       <div style={{ marginTop: "1.5rem" }}>
-        <Link
-          href={`/checkout?state=${stateCode}`}
+        <button
+          type="button"
+          onClick={handleContinue}
           style={{
             display: "inline-block",
             backgroundColor: "#000",
             color: "#fff",
-            textDecoration: "none",
+            border: "none",
             padding: "0.9rem 1.5rem",
             borderRadius: "6px",
             fontWeight: 600,
+            cursor: "pointer",
           }}
         >
           Continue to Checkout
-        </Link>
+        </button>
       </div>
     </div>
   );
